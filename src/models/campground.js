@@ -8,7 +8,10 @@ const CampgroundSchema = new Schema({
     description: String,
     location: String,
     reviews: [
-        { type: Schema.Types.ObjectId, refs: "Review"}
+        { 
+            type: Schema.Types.ObjectId, 
+            ref: "Review"
+        }
     ]
 });
 
