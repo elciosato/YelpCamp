@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 const CatchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
-const {campgroundSchema} = require('./joiSchemas')
+const {campgroundSchema} = require('./joiSchemas');
 
 const app = express();
 app.engine('ejs', ejsMate);
@@ -75,6 +76,17 @@ app.delete("/campgrounds/:id", CatchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`);
+}));
+
+app.post("/campgrounds/:id/reviews", CatchAsync(async (req, res) => {
+    const { id } = req.params;
+    const { body, rating } = req.body.review
+    const campground = await Campground.findById(id);
+    const review = new Review({ body, rating })
+    campground.reviews.push(review);
+    await review.save()
+    await campground.save()
+    res.redirect(`/campgrounds/${id}`)
 }));
 
 app.all("*", (req, res, next) => {
