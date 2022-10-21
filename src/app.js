@@ -103,7 +103,7 @@ app.delete("/campgrounds/:id/reviews/:reviewId",CatchAsync(async (req, res) => {
     const {id, reviewId} = req.params;
     const campground = await Campground.findById(id);
     await Review.findByIdAndDelete(reviewId);
-    await Campground.findByIdAndUpdate(id,{ $pull: {reviews: reviewId}})
+    await Campground.findByIdAndUpdate(id,{ $pull: { reviews: reviewId }})
     // campground.reviews.splice(campground.reviews.indexOf(review),1);
     // await campground.save()
     res.redirect(`/campgrounds/${id}`)
