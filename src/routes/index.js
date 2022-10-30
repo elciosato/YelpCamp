@@ -5,6 +5,13 @@ const ExpressError = require('../utils/ExpressError');
 const campgroudsRoutes = require("./camgroudsRoutes")
 const reviewsRoutes = require("./reviewsRoutes")
 
+// Middleware - save flash messages
+router.use((req, res, next) => {
+  res.locals.success = req.flash("success")
+  res.locals.error = req.flash("error")
+  next();
+})
+
 router.get("/", (req, res) => {
     res.render("home")
 });

@@ -25,6 +25,7 @@ router.get("/", CatchAsync(async (req, res) => {
 router.post("/", validateCampground, CatchAsync(async (req, res) => {
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
+    req.flash("success", "Campground has been created successfully")
     res.redirect(`/campgrounds/${newCampground._id}`);
 }));
 
@@ -35,18 +36,27 @@ router.get("/new", (req, res) => {
 router.get("/:id/edit", CatchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
+    if (!campground) {
+        req.flash("error", "Campground not found")
+        return res.redirect("/campgrounds")
+    }
     res.render("campgrounds/edit", { campground });
 }));
 
 router.put("/:id", validateCampground, CatchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
+    req.flash("success", "Campground has been updated successfully")
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 router.get("/:id", CatchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id).populate("reviews");
+    if (!campground) {
+        req.flash("error", "Campground not found")
+        return res.redirect("/campgrounds")
+    }
     res.render("campgrounds/show", { campground });
 }));
 

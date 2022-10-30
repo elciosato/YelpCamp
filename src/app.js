@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require("express-session")
-
+const flash = require("connect-flash")
 const app = express();
 const router = require("./routes")
 
@@ -28,6 +28,7 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig))
+app.use(flash())
 
 mongoose.connect('mongodb://yelpcampUsr:y3lpcampUsr123@localhost/yelpcampDB');
 
