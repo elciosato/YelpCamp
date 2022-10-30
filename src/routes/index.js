@@ -2,8 +2,9 @@ const express = require("express")
 const router = express.Router();
 const ExpressError = require('../utils/ExpressError');
 
-const campgroudsRoutes = require("./camgroudsRoutes")
-const reviewsRoutes = require("./reviewsRoutes")
+const campgroudRoutes = require("./camgroudRoutes")
+const reviewRoutes = require("./reviewRoutes")
+const userRoutes = require("./userRoutes")
 
 // Middleware - save flash messages
 router.use((req, res, next) => {
@@ -16,8 +17,9 @@ router.get("/", (req, res) => {
     res.render("home")
 });
 
-router.use("/campgrounds", campgroudsRoutes);
-router.use("/campgrounds/:id/reviews", reviewsRoutes);
+router.use("/campgrounds", campgroudRoutes);
+router.use("/campgrounds/:id/reviews", reviewRoutes);
+router.use("/", userRoutes);
 
 router.all("*", (req, res, next) => {
     return next(new ExpressError("Page not found!", 404));

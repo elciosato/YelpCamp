@@ -7,6 +7,9 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const app = express();
 const router = require("./routes")
+const passport = require("passport")
+const LocalStrategy = require("passport-local")
+const User = require("./models/user")
 
 app.engine('ejs', ejsMate);
 
@@ -29,6 +32,12 @@ const sessionConfig = {
 
 app.use(session(sessionConfig))
 app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 mongoose.connect('mongodb://yelpcampUsr:y3lpcampUsr123@localhost/yelpcampDB');
 
