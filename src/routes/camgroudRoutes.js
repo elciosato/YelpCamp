@@ -7,18 +7,19 @@ const Campground = require('../models/campground');
 const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 const campgroundControllers = require("../controllers/campgroundControllers")
 
-router.get("/", CatchAsync(campgroundControllers.index));
+router.route("/")
+  .get(CatchAsync(campgroundControllers.index))
+  .post(isLoggedIn, validateCampground, CatchAsync(campgroundControllers.createCampground));
 
-router.post("/", isLoggedIn, validateCampground, CatchAsync(campgroundControllers.createCampground));
-
+// The new route needs to be before /:id route
 router.get("/new", isLoggedIn, campgroundControllers.renderNewForm);
+
+router.route("/:id")
+  .put(isLoggedIn, isAuthor, validateCampground, CatchAsync(campgroundControllers.updateCampground))
+  .get( CatchAsync(campgroundControllers.showCampground))
+  .delete( isLoggedIn, isAuthor, CatchAsync(campgroundControllers.deleteCampground));
 
 router.get("/:id/edit", isLoggedIn, isAuthor, CatchAsync(campgroundControllers.renderEditForm));
 
-router.put("/:id", isLoggedIn, isAuthor, validateCampground, CatchAsync(campgroundControllers.updateCampground));
-
-router.get("/:id", CatchAsync(campgroundControllers.showCampground));
-
-router.delete("/:id", isLoggedIn, isAuthor, CatchAsync(campgroundControllers.deleteCampground));
 
 module.exports = router;
