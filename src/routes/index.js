@@ -6,8 +6,10 @@ const campgroudRoutes = require("./camgroudRoutes")
 const reviewRoutes = require("./reviewRoutes")
 const userRoutes = require("./userRoutes")
 
-// Middleware - save flash messages
+// Middleware
 router.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  // save flash messages
   res.locals.success = req.flash("success")
   res.locals.error = req.flash("error")
   next();
