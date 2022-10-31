@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --trace-warnings"
+    "dev": "nodemon --trace-warnings",
+    "seed:campgrounds": "node src/seeds/campgrounds"
   },
   "keywords": [],
   "author": "",
