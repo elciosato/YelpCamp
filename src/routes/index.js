@@ -8,6 +8,9 @@ const userRoutes = require("./userRoutes")
 
 // Middleware
 router.use((req, res, next) => {
+  if (!["/login", "/"].includes(req.originalUrl)) {
+    req.session.returnTo = req.originalUrl;
+  }
   res.locals.currentUser = req.user;
   // save flash messages
   res.locals.success = req.flash("success")
