@@ -84,8 +84,6 @@ app.use(
 const dbUrl = process.env.MONGODB_URL;
 const secret = process.env.SECRET;
 
-console.log("dbUrl:", dbUrl);
-console.log("scret:", secret);
 mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
