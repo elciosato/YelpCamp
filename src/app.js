@@ -81,9 +81,11 @@ app.use(
   })
 );
 
-// dbUrl = process.env.MONGODB_URL;
-dbUrl = "mongodb://yelpcampUsr:y3lpcampUsr123@localhost/yelpcampDB";
+const dbUrl = process.env.MONGODB_URL;
+const secret = process.env.SECRET;
 
+console.log("dbUrl:", dbUrl);
+console.log("scret:", secret);
 mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
@@ -92,23 +94,9 @@ db.once("open", () => {
   console.log("Database connected");
 });
 
-const secretMongoStore = process.env.SECRET_MONGO_STORE;
-
-// store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-// const store = MongoStore.create({
-//   mongoUrl: dbUrl,
-//   secret: secretMongoStore,
-//   touchAfter: 24 * 3600,
-// });
-// const store = MongoStore.create({ mongoUrl: dbUrl });
-
-// store.on("error", function (error) {
-//   console.log("Session store:", error);
-// });
-
 const sessionConfig = {
   store: MongoStore.create({ mongoUrl: dbUrl }),
-  secret: process.env.SECRET,
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
